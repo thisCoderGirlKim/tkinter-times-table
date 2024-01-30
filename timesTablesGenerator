@@ -1,0 +1,57 @@
+import tkinter as tk
+
+class TimesTablesGenerator:
+    def __init__(self, master):
+        self.master = master
+        master.title("Rockitskills Times Tables Generator")
+
+        self.label = tk.Label(master, text="Enter a number:")
+        self.label.pack()
+
+        self.entry = tk.Entry(master)
+        self.entry.pack()
+
+        self.generate_button = tk.Button(master, text="Generate Times Table", command=self.generate_table)
+        self.generate_button.pack()
+
+        self.results_text = tk.Listbox(master, height=10, width=40)
+        self.results_text.pack(pady=10)
+
+        self.save_button = tk.Button(master, text="Save to File", command=self.save_to_file)
+        self.save_button.pack()
+
+    def generate_table(self):
+        try:
+            number = int(self.entry.get()) 
+            self.results_text.delete(0, tk.END)
+
+            for i in range(1, 11):
+                result = f"{number} x {i} = {number * i}\n" 
+                self.results_text.insert(tk.END, result)
+
+        except ValueError:
+            self.entry.delete(0, tk.END)
+            self.result_text.insert(tk.END, "Please enter a valid number.")
+            
+
+    def save_to_file(self):
+        try:
+            number = int(self.entry.get())
+            filename = f"{number}_times_table.txt"
+
+            with open(filename, 'w') as file:
+                for num in range(1, 11):
+                    result = f"{number} x {num} = {number * num}\n"
+                    file.write(result)
+            self.results_text.insert(tk.END, f"\nTable saved to {filename}")
+                                    
+        except ValueError:
+            self.results_text.delete(0, tk.END)
+            self.results_text.insert(tk.END, "Please enter a valid number")
+           
+if __name__ == "__main__":
+    print("__name__ is set to:", __name__)
+    root = tk.Tk()
+    root.geometry("600x400")
+    app = TimesTablesGenerator(root)
+    root.mainloop()
